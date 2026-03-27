@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Life Balance Planner (168-hour week)</title>
+  <title>Consulting Readiness Chart</title>
 
   <!-- Chart.js + DataLabels plugin -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -17,6 +17,7 @@
       --muted:#666;
       --danger:#b00020;
       --ok:#147a3a;
+      --warn:#9a6700;
 
       /* Brand */
       --brand:#28456A;
@@ -45,6 +46,7 @@
       height: 104px;
       padding: 0 18px;
       overflow: hidden;
+      border-radius: 10px;
     }
 
     .brand-left{
@@ -103,6 +105,12 @@
       color: var(--brand);
     }
 
+    h2{
+      font-size: 18px;
+      margin: 0 0 10px;
+      color: var(--brand);
+    }
+
     .sub{
       color: var(--brand-muted);
       font-size: 13px;
@@ -140,7 +148,6 @@
       font-family: inherit;
     }
 
-    /* “Other” label inputs */
     .other-label{
       width: 100%;
       padding: 8px 10px;
@@ -158,6 +165,7 @@
       gap: 10px;
       margin-top: 12px;
     }
+
     .pill{
       border: 1px solid #eee;
       border-radius: 12px;
@@ -167,14 +175,25 @@
       align-items: baseline;
       gap: 10px;
     }
+
     .pill .k{ color: var(--brand-muted); font-size: 13px; }
     .pill .v{ font-weight: 800; font-variant-numeric: tabular-nums; }
 
-    .status{ margin-top: 10px; font-size: 13px; }
+    .status{
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
     .status.ok{ color: var(--ok); }
     .status.bad{ color: var(--danger); }
+    .status.warn{ color: var(--warn); }
 
-    .btnrow{ display:flex; flex-wrap: wrap; gap:10px; margin-top: 12px; }
+    .btnrow{
+      display:flex;
+      flex-wrap: wrap;
+      gap:10px;
+      margin-top: 12px;
+    }
 
     button{
       border:none;
@@ -198,7 +217,19 @@
       line-height: 1.4;
     }
 
-    /* ===== PRINT: make the PDF look like a designed worksheet ===== */
+    .section-divider{
+      height: 1px;
+      background: #e8e8e8;
+      margin: 18px 0;
+    }
+
+    .small-note{
+      color: var(--brand-muted);
+      font-size: 12px;
+      line-height: 1.4;
+      margin-top: 8px;
+    }
+
     @media print {
       @page { margin: 12mm; }
 
@@ -207,7 +238,6 @@
         padding: 0 !important;
       }
 
-      /* Remove “website” shadows */
       .card {
         box-shadow: none !important;
         border: 1px solid #e6e6e6 !important;
@@ -215,14 +245,12 @@
         page-break-inside: avoid;
       }
 
-      /* Print as a single column */
       .wrap {
         grid-template-columns: 1fr !important;
         gap: 10px !important;
         max-width: none !important;
       }
 
-      /* Tighten header for print */
       .brand-header {
         max-width: none !important;
         margin: 0 0 10mm 0 !important;
@@ -232,58 +260,51 @@
       .brand-logo-img { height: 52px !important; margin-left: 0 !important; }
       .brand-right { font-size: 14px !important; }
 
-      /* Hide buttons + web-only notes */
-      .btnrow, .legendNote {
+      .btnrow, .legendNote, .small-note {
         display: none !important;
       }
 
-      /* Document-like typography */
-      h1 {
+      h1, h2 {
         font-size: 18pt !important;
         margin: 0 0 6pt 0 !important;
       }
+
       .sub {
         font-size: 11pt !important;
         margin: 0 0 10pt 0 !important;
       }
 
-      /* Ensure the blue table header prints */
       thead th {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
 
-      /* Chart sizing for print */
       .chartBox {
         height: 140mm !important;
-      }
-
-      /* Force chart card onto its own page */
-      .wrap > .card:nth-child(2) {
-        break-before: page;
-        page-break-before: always;
       }
     }
   </style>
 </head>
 
 <body>
-  <!-- Branded Header -->
   <div class="brand-header">
     <div class="brand-left">
-      <!-- Put rl-logo-white.png in the repo root next to index.html -->
       <img src="rl-logo-white.png" alt="Robertson Lowstuter" class="brand-logo-img" />
     </div>
     <div class="brand-right">“Create Uncommon Results!®”</div>
   </div>
 
   <div class="wrap">
-    <!-- Planner -->
+    <!-- LEFT COLUMN -->
     <div class="card">
-      <h1>Life Balance Planner (168-hour week)</h1>
+      <h1>Consulting Readiness</h1>
       <p class="sub">
-        Enter hours per week. Percentages + totals update automatically.
-        Your entries auto-save in this browser on this device.
+        Chart 1 maps your full 168-hour week. Chart 2 uses only your Consulting hours and breaks them into the work required to run a consulting business.
+      </p>
+
+      <h2>Chart 1 Input: 168-Hour Week</h2>
+      <p class="sub">
+        Enter hours per week across your full schedule. The <b>Consulting</b> row becomes the derived <b>Hours Working</b> input for Chart 2.
       </p>
 
       <table>
@@ -294,36 +315,75 @@
             <th>% of Week</th>
           </tr>
         </thead>
-        <tbody id="rows"></tbody>
+        <tbody id="rows1"></tbody>
       </table>
 
       <div class="totals">
-        <div class="pill"><div class="k">Total Hours Used</div><div class="v" id="totalUsed">0</div></div>
-        <div class="pill"><div class="k">Total Hours Remaining</div><div class="v" id="totalRemaining">168</div></div>
-        <div class="pill"><div class="k">% Used</div><div class="v" id="pctUsed">0.0%</div></div>
-        <div class="pill"><div class="k">% Remaining</div><div class="v" id="pctRemaining">100.0%</div></div>
+        <div class="pill"><div class="k">Total Hours Used</div><div class="v" id="totalUsed1">0</div></div>
+        <div class="pill"><div class="k">Total Hours Remaining</div><div class="v" id="totalRemaining1">168</div></div>
+        <div class="pill"><div class="k">% Used</div><div class="v" id="pctUsed1">0.0%</div></div>
+        <div class="pill"><div class="k">% Remaining</div><div class="v" id="pctRemaining1">100.0%</div></div>
       </div>
 
-      <div class="status ok" id="status">Ready.</div>
+      <div class="status ok" id="status1">Ready.</div>
+
+      <div class="section-divider"></div>
+
+      <h2>Chart 2 Input: Consulting Hours Breakdown</h2>
+      <p class="sub">
+        Only allocate the hours entered for <b>Consulting</b> above. This chart shows how your working time is distributed.
+      </p>
+
+      <div class="totals">
+        <div class="pill"><div class="k">Hours Working (Consulting)</div><div class="v" id="hoursWorking">0</div></div>
+        <div class="pill"><div class="k">Breakdown Hours Used</div><div class="v" id="totalUsed2">0</div></div>
+        <div class="pill"><div class="k">Breakdown Hours Remaining</div><div class="v" id="totalRemaining2">0</div></div>
+        <div class="pill"><div class="k">% of Working Hours Allocated</div><div class="v" id="pctUsed2">0.0%</div></div>
+      </div>
+
+      <table style="margin-top:12px;">
+        <thead>
+          <tr>
+            <th>Working Category</th>
+            <th>Hours / Week</th>
+            <th>% of Working Hours</th>
+          </tr>
+        </thead>
+        <tbody id="rows2"></tbody>
+      </table>
+
+      <div class="status ok" id="status2">Enter Consulting hours above to activate this section.</div>
 
       <div class="btnrow">
-        <button id="downloadPngBtn">Download Chart (PNG)</button>
+        <button id="downloadChart1Btn">Download Chart 1 (PNG)</button>
+        <button id="downloadChart2Btn">Download Chart 2 (PNG)</button>
         <button id="printBtn">Print / Save as PDF</button>
         <button id="clearBtn">Clear All</button>
       </div>
 
       <div class="legendNote">
-        The pie chart includes a <b>Remaining</b> slice so pie % matches “% of week.”
+        Chart 1 includes a <b>Remaining</b> slice so the pie matches the full 168-hour week. Chart 2 includes a <b>Unallocated Working Time</b> slice when your consulting breakdown does not yet use all consulting hours.
       </div>
     </div>
 
-    <!-- Chart -->
+    <!-- RIGHT COLUMN -->
     <div class="card">
-      <h1>Life Balance Pie Chart</h1>
-      <p class="sub">Percentages display inside slices. Legend on the right matches slice colors.</p>
-
+      <h2>Chart 1: Full 168-Hour Week</h2>
+      <p class="sub">This chart shows how your total week is distributed across life and consulting activities.</p>
       <div class="chartBox">
-        <canvas id="chartCanvas"></canvas>
+        <canvas id="chartCanvas1"></canvas>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2>Chart 2: Working Hours Breakdown</h2>
+      <p class="sub">This chart uses only your Consulting hours and breaks them into the work required to build and run the business.</p>
+      <div class="chartBox">
+        <canvas id="chartCanvas2"></canvas>
+      </div>
+
+      <div class="small-note">
+        Recommended reality check: early-stage consulting usually needs meaningful time in sales and marketing, not just client delivery.
       </div>
     </div>
   </div>
@@ -331,12 +391,12 @@
 <script>
 (() => {
   const WEEK = 168;
-  const LS_KEY = "life_balance_hours_brand_v5"; // includes other labels + hours
+  const LS_KEY = "consulting_readiness_chart_v1";
 
-  const CATEGORIES = [
+  const CATEGORIES_1 = [
     { label: "Family",            key: "family",           color: "#CEA8F0", labelEditable: false },
     { label: "Friends",           key: "friends",          color: "#FFC2E8", labelEditable: false },
-    { label: "Work",              key: "work",             color: "#D8B6A1", labelEditable: false },
+    { label: "Consulting",        key: "consulting",       color: "#D8B6A1", labelEditable: false },
     { label: "Sleep/Rest",        key: "sleep",            color: "#FFF3C5", labelEditable: false },
     { label: "Eating/Food Prep",  key: "eating",           color: "#D2F1C3", labelEditable: false },
     { label: "Health/Fitness",    key: "health",           color: "#C2DCFF", labelEditable: false },
@@ -345,19 +405,35 @@
     { label: "Service/Charity",   key: "service",          color: "#FFDE59", labelEditable: false },
     { label: "Spirituality",      key: "spirituality",     color: "#FF914D", labelEditable: false },
     { label: "Self-Care",         key: "self_care",        color: "#74A45A", labelEditable: false },
-
     { label: "Other 1",           key: "other1",           color: "#6DB4FF", labelEditable: true },
     { label: "Other 2",           key: "other2",           color: "#997CAB", labelEditable: true }
   ];
 
-  const rowsEl = document.getElementById("rows");
-  const totalUsedEl = document.getElementById("totalUsed");
-  const totalRemainingEl = document.getElementById("totalRemaining");
-  const pctUsedEl = document.getElementById("pctUsed");
-  const pctRemainingEl = document.getElementById("pctRemaining");
-  const statusEl = document.getElementById("status");
+  const CATEGORIES_2 = [
+    { label: "Sales (outreach, calls, proposals, closing)", key: "sales",            color: "#7FB3D5" },
+    { label: "Marketing (content, networking, brand building)", key: "marketing",    color: "#F5B7B1" },
+    { label: "Client Delivery (actual paid work)", key: "client_delivery",           color: "#82E0AA" },
+    { label: "Operations (admin, invoicing, scheduling)", key: "operations",         color: "#F8C471" },
+    { label: "Other (legal, learning, misc.)", key: "other_work",                    color: "#C39BD3" }
+  ];
 
-  const downloadPngBtn = document.getElementById("downloadPngBtn");
+  const rows1El = document.getElementById("rows1");
+  const rows2El = document.getElementById("rows2");
+
+  const totalUsed1El = document.getElementById("totalUsed1");
+  const totalRemaining1El = document.getElementById("totalRemaining1");
+  const pctUsed1El = document.getElementById("pctUsed1");
+  const pctRemaining1El = document.getElementById("pctRemaining1");
+  const status1El = document.getElementById("status1");
+
+  const hoursWorkingEl = document.getElementById("hoursWorking");
+  const totalUsed2El = document.getElementById("totalUsed2");
+  const totalRemaining2El = document.getElementById("totalRemaining2");
+  const pctUsed2El = document.getElementById("pctUsed2");
+  const status2El = document.getElementById("status2");
+
+  const downloadChart1Btn = document.getElementById("downloadChart1Btn");
+  const downloadChart2Btn = document.getElementById("downloadChart2Btn");
   const printBtn = document.getElementById("printBtn");
   const clearBtn = document.getElementById("clearBtn");
 
@@ -365,9 +441,16 @@
     if (!isFinite(n)) return 0;
     return n < 0 ? 0 : n;
   }
+
   function fmtPctOfWeek(hours){
     return ((hours / WEEK) * 100).toFixed(1) + "%";
   }
+
+  function fmtPctOfWorking(hours, totalWorking){
+    if (!totalWorking) return "0.0%";
+    return ((hours / totalWorking) * 100).toFixed(1) + "%";
+  }
+
   function fmtNum(x){
     return (Math.round(x * 10) / 10).toString();
   }
@@ -375,57 +458,58 @@
   function loadState(){
     try{
       const raw = localStorage.getItem(LS_KEY);
-      if (!raw) return { hours: {}, labels: {} };
+      if (!raw) return { hours1: {}, labels1: {}, hours2: {} };
       const obj = JSON.parse(raw);
-      if (!obj || typeof obj !== "object") return { hours: {}, labels: {} };
+      if (!obj || typeof obj !== "object") return { hours1: {}, labels1: {}, hours2: {} };
+
       return {
-        hours: (obj.hours && typeof obj.hours === "object") ? obj.hours : {},
-        labels: (obj.labels && typeof obj.labels === "object") ? obj.labels : {}
+        hours1: (obj.hours1 && typeof obj.hours1 === "object") ? obj.hours1 : {},
+        labels1: (obj.labels1 && typeof obj.labels1 === "object") ? obj.labels1 : {},
+        hours2: (obj.hours2 && typeof obj.hours2 === "object") ? obj.hours2 : {}
       };
-    }catch{
-      return { hours: {}, labels: {} };
+    } catch {
+      return { hours1: {}, labels1: {}, hours2: {} };
     }
   }
 
   function saveState(state){
-    try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch{}
+    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {}
   }
 
   let currentState = loadState();
 
-  function getCustomLabel(key){
-    const input = document.getElementById("label_" + key);
+  function getCustomLabel1(key){
+    const input = document.getElementById("label1_" + key);
     const typed = input ? input.value.trim() : "";
     if (typed) return typed;
 
-    const stored = currentState.labels[key];
+    const stored = currentState.labels1[key];
     if (stored && ("" + stored).trim()) return ("" + stored).trim();
 
-    const cat = CATEGORIES.find(c => c.key === key);
+    const cat = CATEGORIES_1.find(c => c.key === key);
     return cat ? cat.label : key;
   }
 
-  function buildTable(){
-    rowsEl.innerHTML = "";
+  function buildTables(){
+    rows1El.innerHTML = "";
+    rows2El.innerHTML = "";
 
-    for (const c of CATEGORIES){
+    for (const c of CATEGORIES_1){
       const tr = document.createElement("tr");
 
       const td1 = document.createElement("td");
-
       if (c.labelEditable){
         const lbl = document.createElement("input");
         lbl.type = "text";
-        lbl.id = "label_" + c.key;
+        lbl.id = "label1_" + c.key;
         lbl.className = "other-label";
         lbl.placeholder = c.label;
 
-        const saved = currentState.labels[c.key];
+        const saved = currentState.labels1[c.key];
         if (saved && ("" + saved).trim()) lbl.value = ("" + saved).trim();
 
         lbl.addEventListener("input", onAnyChange);
         lbl.addEventListener("blur", onAnyChange);
-
         td1.appendChild(lbl);
       } else {
         td1.textContent = c.label;
@@ -437,9 +521,9 @@
       inp.step = "1";
       inp.min = "0";
       inp.inputMode = "decimal";
-      inp.id = "hours_" + c.key;
+      inp.id = "hours1_" + c.key;
 
-      const savedHours = currentState.hours[c.key];
+      const savedHours = currentState.hours1[c.key];
       inp.value = (savedHours ?? "").toString();
 
       inp.addEventListener("input", onAnyChange);
@@ -448,46 +532,86 @@
 
       const td3 = document.createElement("td");
       td3.className = "pct";
-      td3.id = "pct_" + c.key;
+      td3.id = "pct1_" + c.key;
       td3.textContent = "0.0%";
 
       tr.appendChild(td1);
       tr.appendChild(td2);
       tr.appendChild(td3);
-      rowsEl.appendChild(tr);
+      rows1El.appendChild(tr);
+    }
+
+    for (const c of CATEGORIES_2){
+      const tr = document.createElement("tr");
+
+      const td1 = document.createElement("td");
+      td1.textContent = c.label;
+
+      const td2 = document.createElement("td");
+      const inp = document.createElement("input");
+      inp.type = "number";
+      inp.step = "1";
+      inp.min = "0";
+      inp.inputMode = "decimal";
+      inp.id = "hours2_" + c.key;
+
+      const savedHours = currentState.hours2[c.key];
+      inp.value = (savedHours ?? "").toString();
+
+      inp.addEventListener("input", onAnyChange);
+      inp.addEventListener("blur", onAnyChange);
+      td2.appendChild(inp);
+
+      const td3 = document.createElement("td");
+      td3.className = "pct";
+      td3.id = "pct2_" + c.key;
+      td3.textContent = "0.0%";
+
+      tr.appendChild(td1);
+      tr.appendChild(td2);
+      tr.appendChild(td3);
+      rows2El.appendChild(tr);
     }
   }
 
   function readStateFromUI(){
-    const hours = {};
-    const labels = {};
+    const hours1 = {};
+    const labels1 = {};
+    const hours2 = {};
 
-    for (const c of CATEGORIES){
-      const hEl = document.getElementById("hours_" + c.key);
+    for (const c of CATEGORIES_1){
+      const hEl = document.getElementById("hours1_" + c.key);
       const v = clampNonNeg(parseFloat(hEl.value));
-      if (v > 0) hours[c.key] = v;
+      if (v > 0) hours1[c.key] = v;
 
       if (c.labelEditable){
-        const lEl = document.getElementById("label_" + c.key);
+        const lEl = document.getElementById("label1_" + c.key);
         const t = (lEl ? lEl.value.trim() : "");
-        if (t) labels[c.key] = t;
+        if (t) labels1[c.key] = t;
       }
     }
 
-    return { hours, labels };
+    for (const c of CATEGORIES_2){
+      const hEl = document.getElementById("hours2_" + c.key);
+      const v = clampNonNeg(parseFloat(hEl.value));
+      if (v > 0) hours2[c.key] = v;
+    }
+
+    return { hours1, labels1, hours2 };
   }
 
-  let chart;
+  let chart1;
+  let chart2;
 
-  function initChart(){
-    const canvas = document.getElementById("chartCanvas");
+  function makePieChart(canvasId, isWeekChart){
+    const canvas = document.getElementById(canvasId);
     const ctx = canvas.getContext("2d");
 
     if (typeof ChartDataLabels !== "undefined") {
       Chart.register(ChartDataLabels);
     }
 
-    chart = new Chart(ctx, {
+    return new Chart(ctx, {
       type: "pie",
       data: {
         labels: [],
@@ -530,10 +654,11 @@
               }
             }
           },
-
           datalabels: {
-            formatter: (value) => {
-              const pct = (Number(value || 0) / WEEK) * 100;
+            formatter: (value, context) => {
+              const dataset = context.chart.data.datasets[0].data || [];
+              const total = dataset.reduce((a, b) => a + Number(b || 0), 0);
+              const pct = total ? (Number(value || 0) / total) * 100 : 0;
               if (pct < 4) return "";
               return pct.toFixed(1) + "%";
             },
@@ -545,14 +670,20 @@
             align: "center",
             clamp: true
           },
-
           tooltip: {
             callbacks: {
               label: (context) => {
                 const label = context.label || "";
                 const v = Number(context.raw || 0);
-                const pct = (v / WEEK) * 100;
-                return `${label}: ${v.toFixed(1)} hrs (${pct.toFixed(1)}%)`;
+
+                if (isWeekChart){
+                  const pct = (v / WEEK) * 100;
+                  return `${label}: ${v.toFixed(1)} hrs (${pct.toFixed(1)}% of week)`;
+                }
+
+                const total = context.dataset.data.reduce((a, b) => a + Number(b || 0), 0);
+                const pct = total ? (v / total) * 100 : 0;
+                return `${label}: ${v.toFixed(1)} hrs (${pct.toFixed(1)}% of working hours)`;
               }
             }
           }
@@ -565,53 +696,107 @@
     currentState = readStateFromUI();
     saveState(currentState);
 
-    const used = Object.values(currentState.hours).reduce((a,b) => a + Number(b || 0), 0);
-    const remaining = WEEK - used;
+    // ===== Chart 1 logic =====
+    const used1 = Object.values(currentState.hours1).reduce((a,b) => a + Number(b || 0), 0);
+    const remaining1 = WEEK - used1;
+    const consultingHours = Number(currentState.hours1.consulting || 0);
 
-    totalUsedEl.textContent = fmtNum(used);
-    totalRemainingEl.textContent = fmtNum(remaining);
+    totalUsed1El.textContent = fmtNum(used1);
+    totalRemaining1El.textContent = fmtNum(remaining1);
+    pctUsed1El.textContent = ((used1 / WEEK) * 100).toFixed(1) + "%";
+    pctRemaining1El.textContent = ((remaining1 / WEEK) * 100).toFixed(1) + "%";
+    hoursWorkingEl.textContent = fmtNum(consultingHours);
 
-    pctUsedEl.textContent = ((used / WEEK) * 100).toFixed(1) + "%";
-    pctRemainingEl.textContent = ((remaining / WEEK) * 100).toFixed(1) + "%";
-
-    for (const c of CATEGORIES){
-      const v = Number(currentState.hours[c.key] || 0);
-      document.getElementById("pct_" + c.key).textContent = fmtPctOfWeek(v);
+    for (const c of CATEGORIES_1){
+      const v = Number(currentState.hours1[c.key] || 0);
+      document.getElementById("pct1_" + c.key).textContent = fmtPctOfWeek(v);
     }
 
-    if (used > WEEK){
-      statusEl.className = "status bad";
-      statusEl.textContent = `Total exceeds ${WEEK} hours by ${(used - WEEK).toFixed(1)}. Reduce inputs.`;
+    if (used1 > WEEK){
+      status1El.className = "status bad";
+      status1El.textContent = `Total exceeds ${WEEK} hours by ${(used1 - WEEK).toFixed(1)}. Reduce inputs.`;
     } else {
-      statusEl.className = "status ok";
-      statusEl.textContent = `You have ${(WEEK - used).toFixed(1)} hours remaining.`;
+      status1El.className = "status ok";
+      status1El.textContent = `You have ${(WEEK - used1).toFixed(1)} hours remaining in your 168-hour week.`;
     }
 
-    if (used === 0){
-      chart.data.labels = [];
-      chart.data.datasets[0].data = [];
-      chart.data.datasets[0].backgroundColor = [];
-      chart.update();
+    if (used1 === 0){
+      chart1.data.labels = [];
+      chart1.data.datasets[0].data = [];
+      chart1.data.datasets[0].backgroundColor = [];
+      chart1.update();
+    } else {
+      const items1 = CATEGORIES_1
+        .map(c => {
+          const val = Number(currentState.hours1[c.key] || 0);
+          const label = c.labelEditable ? getCustomLabel1(c.key) : c.label;
+          return { label, value: val, color: c.color };
+        })
+        .filter(x => x.value > 0)
+        .sort((a,b) => b.value - a.value);
+
+      if (remaining1 > 0){
+        items1.push({ label: "Remaining", value: remaining1, color: "#E6E6E6" });
+      }
+
+      chart1.data.labels = items1.map(x => x.label);
+      chart1.data.datasets[0].data = items1.map(x => x.value);
+      chart1.data.datasets[0].backgroundColor = items1.map(x => x.color);
+      chart1.update();
+    }
+
+    // ===== Chart 2 logic =====
+    const used2 = Object.values(currentState.hours2).reduce((a,b) => a + Number(b || 0), 0);
+    const remaining2 = consultingHours - used2;
+
+    totalUsed2El.textContent = fmtNum(used2);
+    totalRemaining2El.textContent = fmtNum(Math.max(remaining2, 0));
+
+    const pctUsed2 = consultingHours > 0 ? (used2 / consultingHours) * 100 : 0;
+    pctUsed2El.textContent = pctUsed2.toFixed(1) + "%";
+
+    for (const c of CATEGORIES_2){
+      const v = Number(currentState.hours2[c.key] || 0);
+      document.getElementById("pct2_" + c.key).textContent = fmtPctOfWorking(v, consultingHours);
+    }
+
+    if (consultingHours === 0){
+      status2El.className = "status warn";
+      status2El.textContent = "Enter Consulting hours in Chart 1 to activate the working-hours breakdown.";
+      chart2.data.labels = [];
+      chart2.data.datasets[0].data = [];
+      chart2.data.datasets[0].backgroundColor = [];
+      chart2.update();
       return;
     }
 
-    const items = CATEGORIES
-      .map(c => {
-        const val = Number(currentState.hours[c.key] || 0);
-        const label = c.labelEditable ? getCustomLabel(c.key) : c.label;
-        return { label, value: val, color: c.color };
-      })
-      .filter(x => x.value > 0)
-      .sort((a,b)=>b.value-a.value);
-
-    if (remaining > 0){
-      items.push({ label: "Remaining", value: remaining, color: "#E6E6E6" });
+    if (used2 > consultingHours){
+      status2El.className = "status bad";
+      status2El.textContent = `Working-hours breakdown exceeds Consulting hours by ${(used2 - consultingHours).toFixed(1)}. Reduce Chart 2 inputs.`;
+    } else if (used2 < consultingHours){
+      status2El.className = "status warn";
+      status2El.textContent = `You have ${remaining2.toFixed(1)} unallocated working hours remaining.`;
+    } else {
+      status2El.className = "status ok";
+      status2El.textContent = "Your working-hours breakdown matches your Consulting hours.";
     }
 
-    chart.data.labels = items.map(x => x.label);
-    chart.data.datasets[0].data = items.map(x => x.value);
-    chart.data.datasets[0].backgroundColor = items.map(x => x.color);
-    chart.update();
+    const items2 = CATEGORIES_2
+      .map(c => {
+        const val = Number(currentState.hours2[c.key] || 0);
+        return { label: c.label, value: val, color: c.color };
+      })
+      .filter(x => x.value > 0)
+      .sort((a,b) => b.value - a.value);
+
+    if (remaining2 > 0){
+      items2.push({ label: "Unallocated Working Time", value: remaining2, color: "#E6E6E6" });
+    }
+
+    chart2.data.labels = items2.map(x => x.label);
+    chart2.data.datasets[0].data = items2.map(x => x.value);
+    chart2.data.datasets[0].backgroundColor = items2.map(x => x.color);
+    chart2.update();
   }
 
   let rafPending = false;
@@ -624,10 +809,8 @@
     });
   }
 
-  downloadPngBtn.addEventListener("click", () => {
+  function downloadChart(chart, filename){
     const canvas = chart.canvas;
-    const filename = "life-balance-chart.png";
-
     if (canvas.toBlob){
       canvas.toBlob((blob) => {
         if (!blob) return;
@@ -643,35 +826,48 @@
     } else {
       window.open(canvas.toDataURL("image/png"), "_blank");
     }
+  }
+
+  downloadChart1Btn.addEventListener("click", () => {
+    downloadChart(chart1, "consulting-readiness-chart-1-168-hour-week.png");
   });
 
-  /* Print helper: ensures chart is drawn before print */
+  downloadChart2Btn.addEventListener("click", () => {
+    downloadChart(chart2, "consulting-readiness-chart-2-working-hours.png");
+  });
+
   printBtn.addEventListener("click", () => {
-    chart.update();
+    chart1.update();
+    chart2.update();
     setTimeout(() => window.print(), 80);
   });
 
   clearBtn.addEventListener("click", () => {
     if (!confirm("Clear all hours and labels?")) return;
 
-    for (const c of CATEGORIES){
-      const hEl = document.getElementById("hours_" + c.key);
+    for (const c of CATEGORIES_1){
+      const hEl = document.getElementById("hours1_" + c.key);
       if (hEl) hEl.value = "";
 
       if (c.labelEditable){
-        const lEl = document.getElementById("label_" + c.key);
+        const lEl = document.getElementById("label1_" + c.key);
         if (lEl) lEl.value = "";
       }
     }
 
-    currentState = { hours: {}, labels: {} };
+    for (const c of CATEGORIES_2){
+      const hEl = document.getElementById("hours2_" + c.key);
+      if (hEl) hEl.value = "";
+    }
+
+    currentState = { hours1: {}, labels1: {}, hours2: {} };
     saveState(currentState);
     updateUI();
   });
 
-  // Boot
-  buildTable();
-  initChart();
+  buildTables();
+  chart1 = makePieChart("chartCanvas1", true);
+  chart2 = makePieChart("chartCanvas2", false);
   updateUI();
 })();
 </script>
