@@ -88,6 +88,7 @@
       gap:16px;
       grid-template-columns: 1.05fr 0.95fr;
     }
+
     @media (max-width: 1100px){
       .wrap{ grid-template-columns: 1fr; }
     }
@@ -119,6 +120,7 @@
     }
 
     table{ width:100%; border-collapse: collapse; }
+
     th, td{
       padding: 10px 8px;
       border-bottom: 1px solid #eee;
@@ -135,8 +137,11 @@
     }
 
     th{ text-align:left; }
+
     td:nth-child(2), td:nth-child(3),
-    th:nth-child(2), th:nth-child(3){ text-align:right; }
+    th:nth-child(2), th:nth-child(3){
+      text-align:right;
+    }
 
     input[type="number"]{
       width: 110px;
@@ -146,6 +151,15 @@
       font-size: 14px;
       text-align: right;
       font-family: inherit;
+      outline: none;
+      transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+      background: #fff;
+    }
+
+    input[type="number"]:focus,
+    .other-label:focus{
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(40,69,106,.12);
     }
 
     .other-label{
@@ -155,9 +169,21 @@
       border: 1px solid #ddd;
       font-size: 14px;
       font-family: inherit;
+      outline: none;
+      transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+      background: #fff;
     }
 
-    .pct{ font-variant-numeric: tabular-nums; color:#222; }
+    .input-error{
+      border-color: var(--danger) !important;
+      box-shadow: 0 0 0 3px rgba(176,0,32,.12) !important;
+      background: #fff7f8 !important;
+    }
+
+    .pct{
+      font-variant-numeric: tabular-nums;
+      color:#222;
+    }
 
     .totals{
       display:grid;
@@ -176,14 +202,22 @@
       gap: 10px;
     }
 
-    .pill .k{ color: var(--brand-muted); font-size: 13px; }
-    .pill .v{ font-weight: 800; font-variant-numeric: tabular-nums; }
+    .pill .k{
+      color: var(--brand-muted);
+      font-size: 13px;
+    }
+
+    .pill .v{
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
 
     .status{
       margin-top: 10px;
       font-size: 13px;
       line-height: 1.4;
     }
+
     .status.ok{ color: var(--ok); }
     .status.bad{ color: var(--danger); }
     .status.warn{ color: var(--warn); }
@@ -206,9 +240,15 @@
       background: var(--brand);
       color:#fff;
     }
-    button:disabled{ opacity:.5; cursor:not-allowed; }
 
-    .chartBox{ height: 520px; }
+    button:disabled{
+      opacity:.5;
+      cursor:not-allowed;
+    }
+
+    .chartBox{
+      height: 520px;
+    }
 
     .legendNote{
       margin-top: 8px;
@@ -257,8 +297,15 @@
         height: 70px !important;
         padding: 0 12px !important;
       }
-      .brand-logo-img { height: 52px !important; margin-left: 0 !important; }
-      .brand-right { font-size: 14px !important; }
+
+      .brand-logo-img {
+        height: 52px !important;
+        margin-left: 0 !important;
+      }
+
+      .brand-right {
+        font-size: 14px !important;
+      }
 
       .btnrow, .legendNote, .small-note {
         display: none !important;
@@ -299,12 +346,12 @@
     <div class="card">
       <h1>Consulting Readiness</h1>
       <p class="sub">
-        Chart 1 maps your full 168-hour week. Chart 2 uses only your Consulting hours and breaks them into the work required to run a consulting business.
+        Chart 1 maps your full 168-hour week. Chart 2 uses only your <b>Work</b> hours and breaks them into the activities required to run a consulting business.
       </p>
 
       <h2>Chart 1 Input: 168-Hour Week</h2>
       <p class="sub">
-        Enter hours per week across your full schedule. The <b>Consulting</b> row becomes the derived <b>Hours Working</b> input for Chart 2.
+        Enter hours per week across your full schedule. The <b>Work</b> row becomes the derived <b>Hours Working</b> input for Chart 2.
       </p>
 
       <table>
@@ -329,13 +376,13 @@
 
       <div class="section-divider"></div>
 
-      <h2>Chart 2 Input: Consulting Hours Breakdown</h2>
+      <h2>Chart 2 Input: Hours Working Breakdown</h2>
       <p class="sub">
-        Only allocate the hours entered for <b>Consulting</b> above. This chart shows how your working time is distributed.
+        Only allocate the hours entered for <b>Work</b> above. This second chart breaks those hours into specific consulting-related work categories.
       </p>
 
       <div class="totals">
-        <div class="pill"><div class="k">Hours Working (Consulting)</div><div class="v" id="hoursWorking">0</div></div>
+        <div class="pill"><div class="k">Hours Working (from Work)</div><div class="v" id="hoursWorking">0</div></div>
         <div class="pill"><div class="k">Breakdown Hours Used</div><div class="v" id="totalUsed2">0</div></div>
         <div class="pill"><div class="k">Breakdown Hours Remaining</div><div class="v" id="totalRemaining2">0</div></div>
         <div class="pill"><div class="k">% of Working Hours Allocated</div><div class="v" id="pctUsed2">0.0%</div></div>
@@ -352,7 +399,7 @@
         <tbody id="rows2"></tbody>
       </table>
 
-      <div class="status ok" id="status2">Enter Consulting hours above to activate this section.</div>
+      <div class="status ok" id="status2">Enter Work hours above to activate this section.</div>
 
       <div class="btnrow">
         <button id="downloadChart1Btn">Download Chart 1 (PNG)</button>
@@ -362,14 +409,14 @@
       </div>
 
       <div class="legendNote">
-        Chart 1 includes a <b>Remaining</b> slice so the pie matches the full 168-hour week. Chart 2 includes a <b>Unallocated Working Time</b> slice when your consulting breakdown does not yet use all consulting hours.
+        Chart 1 includes a <b>Remaining</b> slice so the pie matches the full 168-hour week. Chart 2 includes an <b>Unallocated Working Time</b> slice when your working breakdown does not yet use all Work hours.
       </div>
     </div>
 
     <!-- RIGHT COLUMN -->
     <div class="card">
       <h2>Chart 1: Full 168-Hour Week</h2>
-      <p class="sub">This chart shows how your total week is distributed across life and consulting activities.</p>
+      <p class="sub">This chart shows how your total week is distributed across life and work.</p>
       <div class="chartBox">
         <canvas id="chartCanvas1"></canvas>
       </div>
@@ -377,13 +424,13 @@
       <div class="section-divider"></div>
 
       <h2>Chart 2: Working Hours Breakdown</h2>
-      <p class="sub">This chart uses only your Consulting hours and breaks them into the work required to build and run the business.</p>
+      <p class="sub">This chart uses only your Work hours and breaks them into consulting-related activities.</p>
       <div class="chartBox">
         <canvas id="chartCanvas2"></canvas>
       </div>
 
       <div class="small-note">
-        Recommended reality check: early-stage consulting usually needs meaningful time in sales and marketing, not just client delivery.
+        Reality check: early-stage consulting usually requires more sales and marketing time than people expect.
       </div>
     </div>
   </div>
@@ -391,12 +438,12 @@
 <script>
 (() => {
   const WEEK = 168;
-  const LS_KEY = "consulting_readiness_chart_v1";
+  const LS_KEY = "consulting_readiness_chart_v2";
 
   const CATEGORIES_1 = [
     { label: "Family",            key: "family",           color: "#CEA8F0", labelEditable: false },
     { label: "Friends",           key: "friends",          color: "#FFC2E8", labelEditable: false },
-    { label: "Consulting",        key: "consulting",       color: "#D8B6A1", labelEditable: false },
+    { label: "Work",              key: "work",             color: "#D8B6A1", labelEditable: false },
     { label: "Sleep/Rest",        key: "sleep",            color: "#FFF3C5", labelEditable: false },
     { label: "Eating/Food Prep",  key: "eating",           color: "#D2F1C3", labelEditable: false },
     { label: "Health/Fitness",    key: "health",           color: "#C2DCFF", labelEditable: false },
@@ -410,11 +457,11 @@
   ];
 
   const CATEGORIES_2 = [
-    { label: "Sales (outreach, calls, proposals, closing)", key: "sales",            color: "#7FB3D5" },
-    { label: "Marketing (content, networking, brand building)", key: "marketing",    color: "#F5B7B1" },
-    { label: "Client Delivery (actual paid work)", key: "client_delivery",           color: "#82E0AA" },
-    { label: "Operations (admin, invoicing, scheduling)", key: "operations",         color: "#F8C471" },
-    { label: "Other (legal, learning, misc.)", key: "other_work",                    color: "#C39BD3" }
+    { label: "Sales (outreach, calls, proposals, closing)", key: "sales", color: "#7FB3D5" },
+    { label: "Marketing (content, networking, brand building)", key: "marketing", color: "#F5B7B1" },
+    { label: "Client Delivery (actual paid work)", key: "client_delivery", color: "#82E0AA" },
+    { label: "Operations (admin, invoicing, scheduling)", key: "operations", color: "#F8C471" },
+    { label: "Other (legal, learning, misc.)", key: "other_work", color: "#C39BD3" }
   ];
 
   const rows1El = document.getElementById("rows1");
@@ -473,7 +520,9 @@
   }
 
   function saveState(state){
-    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {}
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify(state));
+    } catch {}
   }
 
   let currentState = loadState();
@@ -692,6 +741,46 @@
     });
   }
 
+  function setInputError(el, hasError){
+    if (!el) return;
+    el.classList.toggle("input-error", !!hasError);
+  }
+
+  function clearAllInputErrors(){
+    for (const c of CATEGORIES_1){
+      setInputError(document.getElementById("hours1_" + c.key), false);
+      if (c.labelEditable){
+        setInputError(document.getElementById("label1_" + c.key), false);
+      }
+    }
+
+    for (const c of CATEGORIES_2){
+      setInputError(document.getElementById("hours2_" + c.key), false);
+    }
+  }
+
+  function applyValidationStyles(used1, workHours, used2){
+    clearAllInputErrors();
+
+    const chart1Invalid = used1 > WEEK;
+    const chart2Invalid = (workHours === 0 && used2 > 0) || (used2 > workHours);
+
+    if (chart1Invalid){
+      for (const c of CATEGORIES_1){
+        setInputError(document.getElementById("hours1_" + c.key), true);
+      }
+    }
+
+    if (chart2Invalid){
+      for (const c of CATEGORIES_2){
+        setInputError(document.getElementById("hours2_" + c.key), true);
+      }
+
+      const workInput = document.getElementById("hours1_work");
+      setInputError(workInput, true);
+    }
+  }
+
   function updateUI(){
     currentState = readStateFromUI();
     saveState(currentState);
@@ -699,13 +788,13 @@
     // ===== Chart 1 logic =====
     const used1 = Object.values(currentState.hours1).reduce((a,b) => a + Number(b || 0), 0);
     const remaining1 = WEEK - used1;
-    const consultingHours = Number(currentState.hours1.consulting || 0);
+    const workHours = Number(currentState.hours1.work || 0);
 
     totalUsed1El.textContent = fmtNum(used1);
     totalRemaining1El.textContent = fmtNum(remaining1);
     pctUsed1El.textContent = ((used1 / WEEK) * 100).toFixed(1) + "%";
     pctRemaining1El.textContent = ((remaining1 / WEEK) * 100).toFixed(1) + "%";
-    hoursWorkingEl.textContent = fmtNum(consultingHours);
+    hoursWorkingEl.textContent = fmtNum(workHours);
 
     for (const c of CATEGORIES_1){
       const v = Number(currentState.hours1[c.key] || 0);
@@ -714,7 +803,7 @@
 
     if (used1 > WEEK){
       status1El.className = "status bad";
-      status1El.textContent = `Total exceeds ${WEEK} hours by ${(used1 - WEEK).toFixed(1)}. Reduce inputs.`;
+      status1El.textContent = `Total exceeds ${WEEK} hours by ${(used1 - WEEK).toFixed(1)}. Reduce Chart 1 inputs.`;
     } else {
       status1El.className = "status ok";
       status1El.textContent = `You have ${(WEEK - used1).toFixed(1)} hours remaining in your 168-hour week.`;
@@ -747,22 +836,30 @@
 
     // ===== Chart 2 logic =====
     const used2 = Object.values(currentState.hours2).reduce((a,b) => a + Number(b || 0), 0);
-    const remaining2 = consultingHours - used2;
+    const remaining2 = workHours - used2;
 
     totalUsed2El.textContent = fmtNum(used2);
     totalRemaining2El.textContent = fmtNum(Math.max(remaining2, 0));
 
-    const pctUsed2 = consultingHours > 0 ? (used2 / consultingHours) * 100 : 0;
+    const pctUsed2 = workHours > 0 ? (used2 / workHours) * 100 : 0;
     pctUsed2El.textContent = pctUsed2.toFixed(1) + "%";
 
     for (const c of CATEGORIES_2){
       const v = Number(currentState.hours2[c.key] || 0);
-      document.getElementById("pct2_" + c.key).textContent = fmtPctOfWorking(v, consultingHours);
+      document.getElementById("pct2_" + c.key).textContent = fmtPctOfWorking(v, workHours);
     }
 
-    if (consultingHours === 0){
-      status2El.className = "status warn";
-      status2El.textContent = "Enter Consulting hours in Chart 1 to activate the working-hours breakdown.";
+    applyValidationStyles(used1, workHours, used2);
+
+    if (workHours === 0){
+      if (used2 > 0){
+        status2El.className = "status bad";
+        status2El.textContent = "Chart 2 has hours entered, but Work is 0 in Chart 1. Add Work hours above or clear Chart 2.";
+      } else {
+        status2El.className = "status warn";
+        status2El.textContent = "Enter Work hours above to activate this section.";
+      }
+
       chart2.data.labels = [];
       chart2.data.datasets[0].data = [];
       chart2.data.datasets[0].backgroundColor = [];
@@ -770,15 +867,15 @@
       return;
     }
 
-    if (used2 > consultingHours){
+    if (used2 > workHours){
       status2El.className = "status bad";
-      status2El.textContent = `Working-hours breakdown exceeds Consulting hours by ${(used2 - consultingHours).toFixed(1)}. Reduce Chart 2 inputs.`;
-    } else if (used2 < consultingHours){
+      status2El.textContent = `Working-hours breakdown exceeds Work hours by ${(used2 - workHours).toFixed(1)}. Reduce Chart 2 inputs.`;
+    } else if (used2 < workHours){
       status2El.className = "status warn";
       status2El.textContent = `You have ${remaining2.toFixed(1)} unallocated working hours remaining.`;
     } else {
       status2El.className = "status ok";
-      status2El.textContent = "Your working-hours breakdown matches your Consulting hours.";
+      status2El.textContent = "Your working-hours breakdown matches your Work hours.";
     }
 
     const items2 = CATEGORIES_2
@@ -862,6 +959,7 @@
 
     currentState = { hours1: {}, labels1: {}, hours2: {} };
     saveState(currentState);
+    clearAllInputErrors();
     updateUI();
   });
 
