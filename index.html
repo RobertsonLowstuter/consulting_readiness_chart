@@ -41,7 +41,7 @@
       align-items:center;
       justify-content: space-between;
       background: var(--brand-header-bg);
-      max-width: 1240px;
+      max-width: 1380px;
       margin: 6px auto 18px auto;
       height: 104px;
       padding: 0 18px;
@@ -82,14 +82,14 @@
 
     /* ===== Layout ===== */
     .wrap{
-      max-width: 1240px;
+      max-width: 1380px;
       margin:0 auto;
       display:grid;
       gap:16px;
-      grid-template-columns: 1.05fr 0.95fr;
+      grid-template-columns: 0.95fr 1.15fr;
     }
 
-    @media (max-width: 1100px){
+    @media (max-width: 1180px){
       .wrap{ grid-template-columns: 1fr; }
     }
 
@@ -248,10 +248,6 @@
 
     .chartBox{
       height: 520px;
-    }
-
-    .chartBox.chart2Box{
-      height: 620px;
     }
 
     .legendNote{
@@ -422,7 +418,7 @@
 
       <h2>Chart 2: Working Hours Breakdown</h2>
       <p class="sub">This chart uses only your Work hours and breaks them into consulting-related activities.</p>
-      <div class="chartBox chart2Box">
+      <div class="chartBox">
         <canvas id="chartCanvas2"></canvas>
       </div>
     </div>
@@ -431,7 +427,7 @@
 <script>
 (() => {
   const WEEK = 168;
-  const LS_KEY = "consulting_readiness_chart_v3";
+  const LS_KEY = "consulting_readiness_chart_v4";
 
   const CATEGORIES_1 = [
     { label: "Family",            key: "family",           color: "#CEA8F0", labelEditable: false },
@@ -493,11 +489,6 @@
 
   function fmtNum(x){
     return (Math.round(x * 10) / 10).toString();
-  }
-
-  function truncateLabel(str, maxLen){
-    if (!str) return "";
-    return str.length > maxLen ? str.slice(0, maxLen - 1) + "…" : str;
   }
 
   function loadState(){
@@ -662,8 +653,7 @@
       isWeekChart = false,
       legendPosition = "right",
       legendFontSize = 12,
-      legendBoxWidth = 14,
-      legendMaxLabelLength = 999
+      legendBoxWidth = 14
     } = config;
 
     return new Chart(ctx, {
@@ -686,13 +676,10 @@
           legend: {
             display: true,
             position: legendPosition,
-            align: "center",
             labels: {
               boxWidth: legendBoxWidth,
-              boxHeight: legendBoxWidth,
-              padding: 10,
+              padding: 12,
               font: { size: legendFontSize, weight: "600" },
-              usePointStyle: false,
               generateLabels: (chart) => {
                 const data = chart.data;
                 const ds = data.datasets[0];
@@ -702,10 +689,9 @@
                 return data.labels.map((label, i) => {
                   const v = Number(values[i] || 0);
                   const pct = total ? (v / total) * 100 : 0;
-                  const displayLabel = truncateLabel(label, legendMaxLabelLength);
 
                   return {
-                    text: `${displayLabel} — ${pct.toFixed(1)}%`,
+                    text: `${label} — ${pct.toFixed(1)}%`,
                     fillStyle: Array.isArray(ds.backgroundColor) ? ds.backgroundColor[i] : ds.backgroundColor,
                     strokeStyle: "#fff",
                     lineWidth: 1,
@@ -982,16 +968,14 @@
     isWeekChart: true,
     legendPosition: "right",
     legendFontSize: 12,
-    legendBoxWidth: 14,
-    legendMaxLabelLength: 999
+    legendBoxWidth: 14
   });
 
   chart2 = makePieChart("chartCanvas2", {
     isWeekChart: false,
-    legendPosition: "bottom",
-    legendFontSize: 10,
-    legendBoxWidth: 10,
-    legendMaxLabelLength: 42
+    legendPosition: "right",
+    legendFontSize: 11,
+    legendBoxWidth: 12
   });
 
   updateUI();
