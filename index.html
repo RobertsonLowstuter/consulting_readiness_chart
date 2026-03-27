@@ -250,6 +250,10 @@
       height: 520px;
     }
 
+    .chartBox.chart2Box{
+      height: 620px;
+    }
+
     .legendNote{
       margin-top: 8px;
       color: var(--brand-muted);
@@ -261,13 +265,6 @@
       height: 1px;
       background: #e8e8e8;
       margin: 18px 0;
-    }
-
-    .small-note{
-      color: var(--brand-muted);
-      font-size: 12px;
-      line-height: 1.4;
-      margin-top: 8px;
     }
 
     @media print {
@@ -307,7 +304,7 @@
         font-size: 14px !important;
       }
 
-      .btnrow, .legendNote, .small-note {
+      .btnrow, .legendNote {
         display: none !important;
       }
 
@@ -425,12 +422,8 @@
 
       <h2>Chart 2: Working Hours Breakdown</h2>
       <p class="sub">This chart uses only your Work hours and breaks them into consulting-related activities.</p>
-      <div class="chartBox">
+      <div class="chartBox chart2Box">
         <canvas id="chartCanvas2"></canvas>
-      </div>
-
-      <div class="small-note">
-        Reality check: early-stage consulting usually requires more sales and marketing time than people expect.
       </div>
     </div>
   </div>
@@ -438,7 +431,7 @@
 <script>
 (() => {
   const WEEK = 168;
-  const LS_KEY = "consulting_readiness_chart_v2";
+  const LS_KEY = "consulting_readiness_chart_v3";
 
   const CATEGORIES_1 = [
     { label: "Family",            key: "family",           color: "#CEA8F0", labelEditable: false },
@@ -500,6 +493,11 @@
 
   function fmtNum(x){
     return (Math.round(x * 10) / 10).toString();
+  }
+
+  function truncateLabel(str, maxLen){
+    if (!str) return "";
+    return str.length > maxLen ? str.slice(0, maxLen - 1) + "…" : str;
   }
 
   function loadState(){
@@ -652,13 +650,21 @@
   let chart1;
   let chart2;
 
-  function makePieChart(canvasId, isWeekChart){
+  function makePieChart(canvasId, config = {}){
     const canvas = document.getElementById(canvasId);
     const ctx = canvas.getContext("2d");
 
     if (typeof ChartDataLabels !== "undefined") {
       Chart.register(ChartDataLabels);
     }
+
+    const {
+      isWeekChart = false,
+      legendPosition = "right",
+      legendFontSize = 12,
+      legendBoxWidth = 14,
+      legendMaxLabelLength = 999
+    } = config;
 
     return new Chart(ctx, {
       type: "pie",
@@ -673,14 +679,20 @@
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        layout: {
+          padding: 8
+        },
         plugins: {
           legend: {
             display: true,
-            position: "right",
+            position: legendPosition,
+            align: "center",
             labels: {
-              boxWidth: 14,
-              padding: 12,
-              font: { size: 12, weight: "600" },
+              boxWidth: legendBoxWidth,
+              boxHeight: legendBoxWidth,
+              padding: 10,
+              font: { size: legendFontSize, weight: "600" },
+              usePointStyle: false,
               generateLabels: (chart) => {
                 const data = chart.data;
                 const ds = data.datasets[0];
@@ -690,9 +702,10 @@
                 return data.labels.map((label, i) => {
                   const v = Number(values[i] || 0);
                   const pct = total ? (v / total) * 100 : 0;
+                  const displayLabel = truncateLabel(label, legendMaxLabelLength);
 
                   return {
-                    text: `${label} — ${pct.toFixed(1)}%`,
+                    text: `${displayLabel} — ${pct.toFixed(1)}%`,
                     fillStyle: Array.isArray(ds.backgroundColor) ? ds.backgroundColor[i] : ds.backgroundColor,
                     strokeStyle: "#fff",
                     lineWidth: 1,
@@ -964,8 +977,23 @@
   });
 
   buildTables();
-  chart1 = makePieChart("chartCanvas1", true);
-  chart2 = makePieChart("chartCanvas2", false);
+
+  chart1 = makePieChart("chartCanvas1", {
+    isWeekChart: true,
+    legendPosition: "right",
+    legendFontSize: 12,
+    legendBoxWidth: 14,
+    legendMaxLabelLength: 999
+  });
+
+  chart2 = makePieChart("chartCanvas2", {
+    isWeekChart: false,
+    legendPosition: "bottom",
+    legendFontSize: 10,
+    legendBoxWidth: 10,
+    legendMaxLabelLength: 42
+  });
+
   updateUI();
 })();
 </script>
