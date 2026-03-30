@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Consulting Readiness Chart</title>
+  <title>Consulting Readiness Assessment</title>
 
   <!-- Chart.js + DataLabels plugin -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -18,8 +18,9 @@
       --danger:#b00020;
       --ok:#147a3a;
       --warn:#9a6700;
+      --info:#28456A;
+      --soft:#eef3f8;
 
-      /* Brand */
       --brand:#28456A;
       --brand-muted:#5E6F86;
       --brand-header-bg:#28456A;
@@ -35,7 +36,6 @@
       padding: 22px;
     }
 
-    /* ===== Brand Header ===== */
     .brand-header{
       display:flex;
       align-items:center;
@@ -80,10 +80,79 @@
       .brand-logo-img{ height: 62px; margin-left: 8px; }
     }
 
-    /* ===== Layout ===== */
-    .wrap{
+    .page-shell{
       max-width: 1380px;
-      margin:0 auto;
+      margin: 0 auto;
+    }
+
+    .hero{
+      background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.06);
+      padding: 22px 22px 18px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1{
+      font-size: 30px;
+      line-height: 1.1;
+      color: var(--brand);
+      margin: 0 0 8px;
+    }
+
+    .hero p{
+      margin: 0;
+      color: var(--brand-muted);
+      font-size: 15px;
+      line-height: 1.5;
+      max-width: 850px;
+    }
+
+    .steps{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .step{
+      background: var(--soft);
+      border: 1px solid #dbe6f1;
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .step .num{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .step .title{
+      font-weight: 700;
+      color: var(--brand);
+      margin-bottom: 4px;
+    }
+
+    .step .desc{
+      font-size: 13px;
+      color: var(--brand-muted);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 900px){
+      .steps{ grid-template-columns: 1fr; }
+    }
+
+    .wrap{
       display:grid;
       gap:16px;
       grid-template-columns: 0.95fr 1.15fr;
@@ -100,13 +169,13 @@
       padding: 16px;
     }
 
-    h1{
-      font-size: 20px;
-      margin: 0 0 10px;
+    h2{
+      font-size: 22px;
+      margin: 0 0 8px;
       color: var(--brand);
     }
 
-    h2{
+    h3{
       font-size: 18px;
       margin: 0 0 10px;
       color: var(--brand);
@@ -116,7 +185,75 @@
       color: var(--brand-muted);
       font-size: 13px;
       margin: 0 0 14px;
+      line-height: 1.45;
+    }
+
+    .tiny-note{
+      color: var(--brand-muted);
+      font-size: 12px;
       line-height: 1.4;
+      margin-top: 6px;
+    }
+
+    .summary-grid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 700px){
+      .summary-grid{ grid-template-columns: 1fr; }
+    }
+
+    .summary-card{
+      border: 1px solid #e6edf5;
+      background: #fbfdff;
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .summary-card .label{
+      color: var(--brand-muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+      font-weight: 700;
+    }
+
+    .summary-card .value{
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--brand);
+      margin-bottom: 6px;
+    }
+
+    .summary-card .desc{
+      font-size: 13px;
+      color: #4f647d;
+      line-height: 1.4;
+    }
+
+    .signal{
+      display:inline-block;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin-top: 6px;
+    }
+
+    .signal.good{ background:#e8f6ee; color:var(--ok); }
+    .signal.warn{ background:#fff4df; color:var(--warn); }
+    .signal.bad{ background:#fdecef; color:var(--danger); }
+
+    .insight-list{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: #314255;
+      font-size: 13px;
+      line-height: 1.5;
     }
 
     table{ width:100%; border-collapse: collapse; }
@@ -200,6 +337,7 @@
       justify-content: space-between;
       align-items: baseline;
       gap: 10px;
+      background:#fff;
     }
 
     .pill .k{
@@ -263,12 +401,29 @@
       margin: 18px 0;
     }
 
+    .callout{
+      border: 1px solid #e5edf6;
+      background: #f7fbff;
+      border-left: 5px solid var(--brand);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      color: #40556d;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
     @media print {
       @page { margin: 12mm; }
 
       body {
         background: #fff !important;
         padding: 0 !important;
+      }
+
+      .hero{
+        box-shadow: none !important;
+        border: 1px solid #e6e6e6 !important;
       }
 
       .card {
@@ -304,19 +459,8 @@
         display: none !important;
       }
 
-      h1, h2 {
-        font-size: 18pt !important;
+      h1, h2, h3 {
         margin: 0 0 6pt 0 !important;
-      }
-
-      .sub {
-        font-size: 11pt !important;
-        margin: 0 0 10pt 0 !important;
-      }
-
-      thead th {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
       }
 
       .chartBox {
@@ -334,92 +478,160 @@
     <div class="brand-right">“Create Uncommon Results!®”</div>
   </div>
 
-  <div class="wrap">
-    <!-- LEFT COLUMN -->
-    <div class="card">
-      <h1>Consulting Readiness</h1>
-      <p class="sub">
-        Chart 1 maps your full 168-hour week. Chart 2 uses only your <b>Work</b> hours and breaks them into the activities required to run a consulting business.
+  <div class="page-shell">
+    <div class="hero">
+      <h1>Consulting Readiness Assessment</h1>
+      <p>
+        Determine whether your available time can realistically support a consulting business. This worksheet moves from total weekly capacity to the actual activities required to win, deliver, and manage client work.
       </p>
 
-      <h2>Chart 1 Input: 168-Hour Week</h2>
-      <p class="sub">
-        Enter hours per week across your full schedule. The <b>Work</b> row becomes the derived <b>Hours Working</b> input for Chart 2.
-      </p>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Hours / Week</th>
-            <th>% of Week</th>
-          </tr>
-        </thead>
-        <tbody id="rows1"></tbody>
-      </table>
-
-      <div class="totals">
-        <div class="pill"><div class="k">Total Hours Used</div><div class="v" id="totalUsed1">0</div></div>
-        <div class="pill"><div class="k">Total Hours Remaining</div><div class="v" id="totalRemaining1">168</div></div>
-        <div class="pill"><div class="k">% Used</div><div class="v" id="pctUsed1">0.0%</div></div>
-        <div class="pill"><div class="k">% Remaining</div><div class="v" id="pctRemaining1">100.0%</div></div>
-      </div>
-
-      <div class="status ok" id="status1">Ready.</div>
-
-      <div class="section-divider"></div>
-
-      <h2>Chart 2 Input: Hours Working Breakdown</h2>
-      <p class="sub">
-        Only allocate the hours entered for <b>Work</b> above. This second chart breaks those hours into specific consulting-related work categories.
-      </p>
-
-      <div class="totals">
-        <div class="pill"><div class="k">Hours Working (from Work)</div><div class="v" id="hoursWorking">0</div></div>
-        <div class="pill"><div class="k">Breakdown Hours Used</div><div class="v" id="totalUsed2">0</div></div>
-        <div class="pill"><div class="k">Breakdown Hours Remaining</div><div class="v" id="totalRemaining2">0</div></div>
-        <div class="pill"><div class="k">% of Working Hours Allocated</div><div class="v" id="pctUsed2">0.0%</div></div>
-      </div>
-
-      <table style="margin-top:12px;">
-        <thead>
-          <tr>
-            <th>Working Category</th>
-            <th>Hours / Week</th>
-            <th>% of Working Hours</th>
-          </tr>
-        </thead>
-        <tbody id="rows2"></tbody>
-      </table>
-
-      <div class="status ok" id="status2">Enter Work hours above to activate this section.</div>
-
-      <div class="btnrow">
-        <button id="downloadChart1Btn">Download Chart 1 (PNG)</button>
-        <button id="downloadChart2Btn">Download Chart 2 (PNG)</button>
-        <button id="printBtn">Print / Save as PDF</button>
-        <button id="clearBtn">Clear All</button>
-      </div>
-
-      <div class="legendNote">
-        Chart 1 includes a <b>Remaining</b> slice so the pie matches the full 168-hour week. Chart 2 includes an <b>Unallocated Working Time</b> slice when your working breakdown does not yet use all Work hours.
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <div class="title">Map your full week</div>
+          <div class="desc">Allocate all 168 weekly hours across life and work so your starting assumptions are grounded in reality.</div>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <div class="title">Break down your work time</div>
+          <div class="desc">Use only your Work hours to allocate sales, marketing, client delivery, operations, and other activities.</div>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <div class="title">Review the readiness signals</div>
+          <div class="desc">See whether your plan is realistic, where the risks are, and what to adjust before launching.</div>
+        </div>
       </div>
     </div>
 
-    <!-- RIGHT COLUMN -->
-    <div class="card">
-      <h2>Chart 1: Full 168-Hour Week</h2>
-      <p class="sub">This chart shows how your total week is distributed across life and work.</p>
-      <div class="chartBox">
-        <canvas id="chartCanvas1"></canvas>
+    <div class="wrap">
+      <!-- LEFT COLUMN -->
+      <div class="card">
+        <h2>Readiness Summary</h2>
+        <p class="sub">
+          This section interprets your numbers so the worksheet functions as a decision tool, not just a chart generator.
+        </p>
+
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="label">Overall Readiness</div>
+            <div class="value" id="readinessValue">Not enough data</div>
+            <div class="desc" id="readinessDesc">Enter your full week and work breakdown to see your readiness signal.</div>
+            <div class="signal warn" id="readinessSignal">INCOMPLETE</div>
+          </div>
+
+          <div class="summary-card">
+            <div class="label">Biggest Risk</div>
+            <div class="value" id="riskValue">None yet</div>
+            <div class="desc" id="riskDesc">The tool will flag the biggest planning issue based on your allocation.</div>
+          </div>
+
+          <div class="summary-card">
+            <div class="label">Capacity</div>
+            <div class="value" id="capacityValue">—</div>
+            <div class="desc" id="capacityDesc">Your total schedule needs enough room for consulting work to be realistic.</div>
+          </div>
+
+          <div class="summary-card">
+            <div class="label">Business Development</div>
+            <div class="value" id="bizDevValue">—</div>
+            <div class="desc" id="bizDevDesc">Sales and marketing usually need more time than new consultants expect.</div>
+          </div>
+        </div>
+
+        <ul class="insight-list" id="insightList">
+          <li>Enter your numbers to generate tailored observations.</li>
+        </ul>
+
+        <div class="section-divider"></div>
+
+        <h3>Part 1: Your Full 168-Hour Week</h3>
+        <p class="sub">
+          Enter hours per week across your full schedule. Use the <b>Work</b> row for the hours you can realistically dedicate to building and delivering your consulting business.
+        </p>
+
+        <div class="callout">
+          Clients usually overestimate available work time. This section is meant to expose that early.
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Hours / Week</th>
+              <th>% of Week</th>
+            </tr>
+          </thead>
+          <tbody id="rows1"></tbody>
+        </table>
+
+        <div class="totals">
+          <div class="pill"><div class="k">Total Hours Used</div><div class="v" id="totalUsed1">0</div></div>
+          <div class="pill"><div class="k">Total Hours Remaining</div><div class="v" id="totalRemaining1">168</div></div>
+          <div class="pill"><div class="k">% Used</div><div class="v" id="pctUsed1">0.0%</div></div>
+          <div class="pill"><div class="k">% Remaining</div><div class="v" id="pctRemaining1">100.0%</div></div>
+        </div>
+
+        <div class="status ok" id="status1">Ready.</div>
+
+        <div class="section-divider"></div>
+
+        <h3>Part 2: Your Working Hours Breakdown</h3>
+        <p class="sub">
+          Only allocate the hours entered for <b>Work</b> above. This section tests whether your consulting time is distributed realistically across the activities required to win and deliver work.
+        </p>
+
+        <div class="callout">
+          Early-stage consulting usually requires meaningful time in sales and marketing. If nearly all of your work hours go to delivery, future pipeline is at risk.
+        </div>
+
+        <div class="totals">
+          <div class="pill"><div class="k">Hours Working (from Work)</div><div class="v" id="hoursWorking">0</div></div>
+          <div class="pill"><div class="k">Breakdown Hours Used</div><div class="v" id="totalUsed2">0</div></div>
+          <div class="pill"><div class="k">Breakdown Hours Remaining</div><div class="v" id="totalRemaining2">0</div></div>
+          <div class="pill"><div class="k">% of Working Hours Allocated</div><div class="v" id="pctUsed2">0.0%</div></div>
+        </div>
+
+        <table style="margin-top:12px;">
+          <thead>
+            <tr>
+              <th>Working Category</th>
+              <th>Hours / Week</th>
+              <th>% of Working Hours</th>
+            </tr>
+          </thead>
+          <tbody id="rows2"></tbody>
+        </table>
+
+        <div class="status ok" id="status2">Enter Work hours above to activate this section.</div>
+
+        <div class="btnrow">
+          <button id="downloadChart1Btn">Export Week Chart</button>
+          <button id="downloadChart2Btn">Export Work Breakdown</button>
+          <button id="printBtn">Save as PDF</button>
+          <button id="clearBtn">Reset Worksheet</button>
+        </div>
+
+        <div class="legendNote">
+          Chart 1 includes a <b>Remaining</b> slice so the pie matches the full 168-hour week. Chart 2 includes an <b>Unallocated Working Time</b> slice when your working breakdown does not yet use all Work hours.
+        </div>
       </div>
 
-      <div class="section-divider"></div>
+      <!-- RIGHT COLUMN -->
+      <div class="card">
+        <h3>Chart 1: Full 168-Hour Week</h3>
+        <p class="sub">Use this chart to see whether your weekly capacity is actually available for consulting.</p>
+        <div class="chartBox">
+          <canvas id="chartCanvas1"></canvas>
+        </div>
 
-      <h2>Chart 2: Working Hours Breakdown</h2>
-      <p class="sub">This chart uses only your Work hours and breaks them into consulting-related activities.</p>
-      <div class="chartBox">
-        <canvas id="chartCanvas2"></canvas>
+        <div class="section-divider"></div>
+
+        <h3>Chart 2: Working Hours Breakdown</h3>
+        <p class="sub">Use this chart to see whether your consulting time is allocated across the functions required to build a sustainable business.</p>
+        <div class="chartBox">
+          <canvas id="chartCanvas2"></canvas>
+        </div>
       </div>
     </div>
   </div>
@@ -427,7 +639,7 @@
 <script>
 (() => {
   const WEEK = 168;
-  const LS_KEY = "consulting_readiness_chart_v4";
+  const LS_KEY = "consulting_readiness_chart_v5";
 
   const CATEGORIES_1 = [
     { label: "Family",            key: "family",           color: "#CEA8F0", labelEditable: false },
@@ -446,11 +658,11 @@
   ];
 
   const CATEGORIES_2 = [
-    { label: "Sales (outreach, calls, proposals, closing)", key: "sales", color: "#7FB3D5" },
-    { label: "Marketing (content, networking, brand building)", key: "marketing", color: "#F5B7B1" },
-    { label: "Client Delivery (actual paid work)", key: "client_delivery", color: "#82E0AA" },
-    { label: "Operations (admin, invoicing, scheduling)", key: "operations", color: "#F8C471" },
-    { label: "Other (legal, learning, misc.)", key: "other_work", color: "#C39BD3" }
+    { short: "Sales", label: "Sales (outreach, calls, proposals, closing)", key: "sales", color: "#7FB3D5" },
+    { short: "Marketing", label: "Marketing (content, networking, brand building)", key: "marketing", color: "#F5B7B1" },
+    { short: "Client Delivery", label: "Client Delivery (actual paid work)", key: "client_delivery", color: "#82E0AA" },
+    { short: "Operations", label: "Operations (admin, invoicing, scheduling)", key: "operations", color: "#F8C471" },
+    { short: "Other", label: "Other (legal, learning, misc.)", key: "other_work", color: "#C39BD3" }
   ];
 
   const rows1El = document.getElementById("rows1");
@@ -467,6 +679,21 @@
   const totalRemaining2El = document.getElementById("totalRemaining2");
   const pctUsed2El = document.getElementById("pctUsed2");
   const status2El = document.getElementById("status2");
+
+  const readinessValueEl = document.getElementById("readinessValue");
+  const readinessDescEl = document.getElementById("readinessDesc");
+  const readinessSignalEl = document.getElementById("readinessSignal");
+
+  const riskValueEl = document.getElementById("riskValue");
+  const riskDescEl = document.getElementById("riskDesc");
+
+  const capacityValueEl = document.getElementById("capacityValue");
+  const capacityDescEl = document.getElementById("capacityDesc");
+
+  const bizDevValueEl = document.getElementById("bizDevValue");
+  const bizDevDescEl = document.getElementById("bizDevDesc");
+
+  const insightListEl = document.getElementById("insightList");
 
   const downloadChart1Btn = document.getElementById("downloadChart1Btn");
   const downloadChart2Btn = document.getElementById("downloadChart2Btn");
@@ -780,11 +1007,162 @@
     }
   }
 
+  function setReadinessSignal(text, tone){
+    readinessSignalEl.textContent = text;
+    readinessSignalEl.className = "signal " + tone;
+  }
+
+  function updateSummary(workHours, used1, used2, workBreakdown){
+    const sales = workBreakdown.sales || 0;
+    const marketing = workBreakdown.marketing || 0;
+    const delivery = workBreakdown.client_delivery || 0;
+    const operations = workBreakdown.operations || 0;
+    const other = workBreakdown.other_work || 0;
+
+    const bizDev = sales + marketing;
+    const bizDevPct = workHours > 0 ? (bizDev / workHours) * 100 : 0;
+    const deliveryPct = workHours > 0 ? (delivery / workHours) * 100 : 0;
+    const workPctOfWeek = (workHours / WEEK) * 100;
+    const overload = used1 > WEEK;
+    const breakdownOverflow = used2 > workHours;
+    const incomplete = workHours === 0 || used2 === 0;
+
+    let overall = "Not enough data";
+    let overallDesc = "Enter your full week and work breakdown to see your readiness signal.";
+    let overallTone = "warn";
+
+    let biggestRisk = "None yet";
+    let biggestRiskDesc = "The tool will flag the biggest planning issue based on your allocation.";
+
+    let capacityValue = "Insufficient";
+    let capacityDesc = "Your schedule needs room for consulting work to be realistic.";
+    let bizDevValue = "Insufficient";
+    let bizDevDesc = "Sales and marketing are usually under-allocated in early consulting businesses.";
+
+    const insights = [];
+
+    if (workHours === 0){
+      capacityValue = "No work time";
+      capacityDesc = "You have not allocated any Work hours in Part 1, so the consulting plan is not yet viable.";
+      bizDevValue = "Not started";
+      bizDevDesc = "Allocate Work hours before evaluating your sales and marketing time.";
+      biggestRisk = "No available consulting time";
+      biggestRiskDesc = "You cannot test consulting readiness if your schedule does not include Work hours.";
+      setReadinessSignal("INCOMPLETE", "warn");
+      readinessValueEl.textContent = overall;
+      readinessDescEl.textContent = overallDesc;
+      riskValueEl.textContent = biggestRisk;
+      riskDescEl.textContent = biggestRiskDesc;
+      capacityValueEl.textContent = capacityValue;
+      capacityDescEl.textContent = capacityDesc;
+      bizDevValueEl.textContent = bizDevValue;
+      bizDevDescEl.textContent = bizDevDesc;
+      insightListEl.innerHTML = "<li>Allocate time to Work in Part 1 before using this as a consulting readiness tool.</li>";
+      return;
+    }
+
+    if (workPctOfWeek < 10){
+      capacityValue = "Very limited";
+      capacityDesc = "Your Work hours make up less than 10% of the week, which may be too little to build a consulting business with momentum.";
+      insights.push("Your available consulting time is very limited. This may be realistic for exploration, but weak for serious launch velocity.");
+    } else if (workPctOfWeek < 20){
+      capacityValue = "Moderate";
+      capacityDesc = "You have some room for consulting, but capacity is still constrained and tradeoffs matter.";
+      insights.push("You have some capacity to build a consulting business, but time discipline will matter.");
+    } else {
+      capacityValue = "Strong";
+      capacityDesc = "Your schedule shows meaningful room for consulting work, which improves launch viability.";
+      insights.push("Your available Work hours suggest this could be more than a side experiment.");
+    }
+
+    if (bizDevPct < 20){
+      bizDevValue = "Too low";
+      bizDevDesc = "Sales plus marketing are below 20% of your working hours. That creates pipeline risk.";
+      insights.push("Sales and marketing time is low relative to the hours required to generate demand.");
+    } else if (bizDevPct < 35){
+      bizDevValue = "Adequate";
+      bizDevDesc = "Sales and marketing are present, but may still be light depending on how early you are.";
+      insights.push("Business development time is present, but may need to increase if you do not yet have steady demand.");
+    } else {
+      bizDevValue = "Strong";
+      bizDevDesc = "A meaningful share of your work time is going to business development, which supports pipeline creation.";
+      insights.push("Your sales and marketing allocation is more realistic than what most people assume.");
+    }
+
+    if (overload){
+      overall = "Unrealistic";
+      overallDesc = "Your total plan exceeds the 168 hours available in a week. The schedule is not workable as entered.";
+      overallTone = "bad";
+      biggestRisk = "Capacity overload";
+      biggestRiskDesc = "You have planned more time than exists in the week, so every downstream conclusion is unreliable until this is fixed.";
+      insights.unshift("Your total weekly plan is overloaded. Reduce categories before trusting any readiness signals.");
+    } else if (breakdownOverflow){
+      overall = "Unrealistic";
+      overallDesc = "Your working-hours breakdown requires more time than you actually made available in the week.";
+      overallTone = "bad";
+      biggestRisk = "Work breakdown exceeds capacity";
+      biggestRiskDesc = "The consulting activity plan is larger than the time you actually have available.";
+      insights.unshift("Your consulting work mix is asking for more time than your week can support.");
+    } else if (deliveryPct > 70 && bizDevPct < 20){
+      overall = "High risk";
+      overallDesc = "Your plan is heavily delivery-weighted and underinvested in business development. That creates future pipeline risk.";
+      overallTone = "bad";
+      biggestRisk = "Pipeline risk";
+      biggestRiskDesc = "Too much time is allocated to delivery relative to the time needed to win future work.";
+      insights.unshift("You are relying too heavily on delivery and not enough on sales and marketing.");
+    } else if (incomplete || used2 < workHours){
+      overall = "Promising but incomplete";
+      overallDesc = "The direction may be workable, but not all working hours have been allocated yet.";
+      overallTone = "warn";
+      biggestRisk = "Incomplete planning";
+      biggestRiskDesc = "Not all Work hours are assigned, which makes the readiness picture partial.";
+      insights.unshift("Finish allocating all Work hours before treating this as a final readiness assessment.");
+    } else if (workPctOfWeek >= 15 && bizDevPct >= 25 && deliveryPct <= 65){
+      overall = "Realistic";
+      overallDesc = "Your time allocation looks reasonably aligned with the demands of building and operating a consulting business.";
+      overallTone = "good";
+      biggestRisk = "Execution discipline";
+      biggestRiskDesc = "The structure is plausible. The next challenge is following it consistently in real life.";
+      insights.unshift("Your plan appears more grounded than average and shows a workable balance between business development and delivery.");
+    } else {
+      overall = "Moderate risk";
+      overallDesc = "Your plan could work, but some parts of the time allocation still create strain or risk.";
+      overallTone = "warn";
+      biggestRisk = "Balance risk";
+      biggestRiskDesc = "The mix of available time and work allocation is not obviously broken, but it is not yet strong.";
+      insights.unshift("This plan is not impossible, but it still needs tightening before you should trust it.");
+    }
+
+    if (operations === 0 && workHours > 0){
+      insights.push("No time is allocated to operations. In reality, admin, invoicing, and scheduling will take time.");
+    }
+    if (other === 0 && workHours > 0){
+      insights.push("No time is allocated to legal, learning, or miscellaneous work. That may be too optimistic.");
+    }
+    if (delivery > sales + marketing && workHours > 0){
+      insights.push("Client delivery outweighs sales plus marketing. That can be risky if your client pipeline is not already strong.");
+    }
+
+    readinessValueEl.textContent = overall;
+    readinessDescEl.textContent = overallDesc;
+    setReadinessSignal(overallTone === "good" ? "REALISTIC" : overallTone === "bad" ? "HIGH RISK" : "USE CAUTION", overallTone);
+
+    riskValueEl.textContent = biggestRisk;
+    riskDescEl.textContent = biggestRiskDesc;
+
+    capacityValueEl.textContent = capacityValue;
+    capacityDescEl.textContent = capacityDesc;
+
+    bizDevValueEl.textContent = bizDevValue;
+    bizDevDescEl.textContent = bizDevDesc;
+
+    insightListEl.innerHTML = insights.map(x => `<li>${x}</li>`).join("");
+  }
+
   function updateUI(){
     currentState = readStateFromUI();
     saveState(currentState);
 
-    // ===== Chart 1 logic =====
     const used1 = Object.values(currentState.hours1).reduce((a,b) => a + Number(b || 0), 0);
     const remaining1 = WEEK - used1;
     const workHours = Number(currentState.hours1.work || 0);
@@ -802,7 +1180,7 @@
 
     if (used1 > WEEK){
       status1El.className = "status bad";
-      status1El.textContent = `Total exceeds ${WEEK} hours by ${(used1 - WEEK).toFixed(1)}. Reduce Chart 1 inputs.`;
+      status1El.textContent = `Your plan exceeds the 168 hours available in a week by ${(used1 - WEEK).toFixed(1)} hours. Reduce one or more categories to make the plan realistic.`;
     } else {
       status1El.className = "status ok";
       status1El.textContent = `You have ${(WEEK - used1).toFixed(1)} hours remaining in your 168-hour week.`;
@@ -833,7 +1211,6 @@
       chart1.update();
     }
 
-    // ===== Chart 2 logic =====
     const used2 = Object.values(currentState.hours2).reduce((a,b) => a + Number(b || 0), 0);
     const remaining2 = workHours - used2;
 
@@ -853,7 +1230,7 @@
     if (workHours === 0){
       if (used2 > 0){
         status2El.className = "status bad";
-        status2El.textContent = "Chart 2 has hours entered, but Work is 0 in Chart 1. Add Work hours above or clear Chart 2.";
+        status2El.textContent = "You have hours entered in Part 2, but Work is 0 in Part 1. Add Work hours above or clear the work breakdown.";
       } else {
         status2El.className = "status warn";
         status2El.textContent = "Enter Work hours above to activate this section.";
@@ -863,36 +1240,40 @@
       chart2.data.datasets[0].data = [];
       chart2.data.datasets[0].backgroundColor = [];
       chart2.update();
+
+      updateSummary(workHours, used1, used2, currentState.hours2);
       return;
     }
 
     if (used2 > workHours){
       status2El.className = "status bad";
-      status2El.textContent = `Working-hours breakdown exceeds Work hours by ${(used2 - workHours).toFixed(1)}. Reduce Chart 2 inputs.`;
+      status2El.textContent = `Your consulting activity plan requires ${(used2 - workHours).toFixed(1)} more hours than you actually have available. Reduce one or more work categories or increase Work hours in Part 1.`;
     } else if (used2 < workHours){
-      status2El.className = "status warn";
-      status2El.textContent = `You have ${remaining2.toFixed(1)} unallocated working hours remaining.`;
+      status2El.className = "status.warn";
+      status2El.textContent = `You still have ${remaining2.toFixed(1)} unallocated working hours. Finish assigning them before treating this as a final plan.`;
     } else {
       status2El.className = "status ok";
-      status2El.textContent = "Your working-hours breakdown matches your Work hours.";
+      status2El.textContent = "Your working-hours breakdown matches your available Work hours.";
     }
 
     const items2 = CATEGORIES_2
       .map(c => {
         const val = Number(currentState.hours2[c.key] || 0);
-        return { label: c.label, value: val, color: c.color };
+        return { label: c.short, value: val, color: c.color };
       })
       .filter(x => x.value > 0)
       .sort((a,b) => b.value - a.value);
 
     if (remaining2 > 0){
-      items2.push({ label: "Unallocated Working Time", value: remaining2, color: "#E6E6E6" });
+      items2.push({ label: "Unallocated", value: remaining2, color: "#E6E6E6" });
     }
 
     chart2.data.labels = items2.map(x => x.label);
     chart2.data.datasets[0].data = items2.map(x => x.value);
     chart2.data.datasets[0].backgroundColor = items2.map(x => x.color);
     chart2.update();
+
+    updateSummary(workHours, used1, used2, currentState.hours2);
   }
 
   let rafPending = false;
@@ -925,11 +1306,11 @@
   }
 
   downloadChart1Btn.addEventListener("click", () => {
-    downloadChart(chart1, "consulting-readiness-chart-1-168-hour-week.png");
+    downloadChart(chart1, "consulting-readiness-week-chart.png");
   });
 
   downloadChart2Btn.addEventListener("click", () => {
-    downloadChart(chart2, "consulting-readiness-chart-2-working-hours.png");
+    downloadChart(chart2, "consulting-readiness-work-breakdown.png");
   });
 
   printBtn.addEventListener("click", () => {
@@ -939,7 +1320,7 @@
   });
 
   clearBtn.addEventListener("click", () => {
-    if (!confirm("Clear all hours and labels?")) return;
+    if (!confirm("Reset all hours and labels?")) return;
 
     for (const c of CATEGORIES_1){
       const hEl = document.getElementById("hours1_" + c.key);
