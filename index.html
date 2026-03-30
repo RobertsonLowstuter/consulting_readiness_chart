@@ -152,15 +152,16 @@
       .steps{ grid-template-columns: 1fr; }
     }
 
-    .wrap{
+    .section-row{
       display:grid;
       gap:16px;
       grid-template-columns: 0.95fr 1.15fr;
       align-items:start;
+      margin-top: 16px;
     }
 
     @media (max-width: 1180px){
-      .wrap{ grid-template-columns: 1fr; }
+      .section-row{ grid-template-columns: 1fr; }
     }
 
     .card{
@@ -393,12 +394,6 @@
       line-height: 1.4;
     }
 
-    .section-divider{
-      height: 1px;
-      background: #e8e8e8;
-      margin: 18px 0;
-    }
-
     .callout{
       border: 1px solid #e5edf6;
       background: #f7fbff;
@@ -431,10 +426,8 @@
         page-break-inside: avoid;
       }
 
-      .wrap {
+      .section-row {
         grid-template-columns: 1fr !important;
-        gap: 10px !important;
-        max-width: none !important;
       }
 
       .brand-header {
@@ -455,10 +448,6 @@
 
       .btnrow, .legendNote {
         display: none !important;
-      }
-
-      h1, h2, h3 {
-        margin: 0 0 6pt 0 !important;
       }
 
       .chartBox {
@@ -502,8 +491,8 @@
       </div>
     </div>
 
-    <div class="wrap">
-      <!-- LEFT COLUMN -->
+    <!-- SECTION 1 -->
+    <div class="section-row">
       <div class="card">
         <h2>Section 1: Your Full 168-Hour Week</h2>
         <p class="sub">
@@ -533,9 +522,20 @@
         </div>
 
         <div class="status ok" id="status1">Ready.</div>
+      </div>
 
-        <div class="section-divider"></div>
+      <div class="card">
+        <h2>Section 1 Chart: Full 168-Hour Week</h2>
+        <p class="sub">Use this chart to see whether your weekly capacity is actually available for consulting.</p>
+        <div class="chartBox">
+          <canvas id="chartCanvas1"></canvas>
+        </div>
+      </div>
+    </div>
 
+    <!-- SECTION 2 -->
+    <div class="section-row">
+      <div class="card">
         <h2>Section 2: Your Working Hours Breakdown</h2>
         <p class="sub">
           Only allocate the hours entered for <b>Work</b> above. This section tests whether your consulting time is distributed realistically across the activities required to win and deliver work.
@@ -577,16 +577,7 @@
         </div>
       </div>
 
-      <!-- RIGHT COLUMN -->
       <div class="card">
-        <h2>Section 1 Chart: Full 168-Hour Week</h2>
-        <p class="sub">Use this chart to see whether your weekly capacity is actually available for consulting.</p>
-        <div class="chartBox">
-          <canvas id="chartCanvas1"></canvas>
-        </div>
-
-        <div class="section-divider"></div>
-
         <h2>Section 2 Chart: Working Hours Breakdown</h2>
         <p class="sub">Use this chart to see whether your consulting time is allocated across the functions required to build a sustainable business.</p>
         <div class="chartBox">
@@ -595,6 +586,7 @@
       </div>
     </div>
 
+    <!-- SECTION 3 -->
     <div class="card bottom-card">
       <h2>Section 3: Readiness Summary</h2>
       <p class="sub">
@@ -637,7 +629,7 @@
 <script>
 (() => {
   const WEEK = 168;
-  const LS_KEY = "consulting_readiness_chart_v6";
+  const LS_KEY = "consulting_readiness_chart_v7";
 
   const CATEGORIES_1 = [
     { label: "Family",            key: "family",           color: "#CEA8F0", labelEditable: false },
