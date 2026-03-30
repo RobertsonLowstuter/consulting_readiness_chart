@@ -156,6 +156,7 @@
       display:grid;
       gap:16px;
       grid-template-columns: 0.95fr 1.15fr;
+      align-items:start;
     }
 
     @media (max-width: 1180px){
@@ -167,6 +168,10 @@
       border-radius: 14px;
       box-shadow: 0 4px 12px rgba(0,0,0,.08);
       padding: 16px;
+    }
+
+    .bottom-card{
+      margin-top: 16px;
     }
 
     h2{
@@ -186,13 +191,6 @@
       font-size: 13px;
       margin: 0 0 14px;
       line-height: 1.45;
-    }
-
-    .tiny-note{
-      color: var(--brand-muted);
-      font-size: 12px;
-      line-height: 1.4;
-      margin-top: 6px;
     }
 
     .summary-grid{
@@ -489,7 +487,7 @@
         <div class="step">
           <div class="num">1</div>
           <div class="title">Map your full week</div>
-          <div class="desc">Allocate all 168 weekly hours across life and work so your starting assumptions are grounded in reality.</div>
+          <div class="desc">Allocate all 168 weekly hours across life and work so your assumptions are grounded in reality.</div>
         </div>
         <div class="step">
           <div class="num">2</div>
@@ -498,8 +496,8 @@
         </div>
         <div class="step">
           <div class="num">3</div>
-          <div class="title">Review the readiness signals</div>
-          <div class="desc">See whether your plan is realistic, where the risks are, and what to adjust before launching.</div>
+          <div class="title">Review your readiness summary</div>
+          <div class="desc">See whether the plan is realistic, where the risks are, and what needs to change before launch.</div>
         </div>
       </div>
     </div>
@@ -507,45 +505,7 @@
     <div class="wrap">
       <!-- LEFT COLUMN -->
       <div class="card">
-        <h2>Readiness Summary</h2>
-        <p class="sub">
-          This section interprets your numbers so the worksheet functions as a decision tool, not just a chart generator.
-        </p>
-
-        <div class="summary-grid">
-          <div class="summary-card">
-            <div class="label">Overall Readiness</div>
-            <div class="value" id="readinessValue">Not enough data</div>
-            <div class="desc" id="readinessDesc">Enter your full week and work breakdown to see your readiness signal.</div>
-            <div class="signal warn" id="readinessSignal">INCOMPLETE</div>
-          </div>
-
-          <div class="summary-card">
-            <div class="label">Biggest Risk</div>
-            <div class="value" id="riskValue">None yet</div>
-            <div class="desc" id="riskDesc">The tool will flag the biggest planning issue based on your allocation.</div>
-          </div>
-
-          <div class="summary-card">
-            <div class="label">Capacity</div>
-            <div class="value" id="capacityValue">—</div>
-            <div class="desc" id="capacityDesc">Your total schedule needs enough room for consulting work to be realistic.</div>
-          </div>
-
-          <div class="summary-card">
-            <div class="label">Business Development</div>
-            <div class="value" id="bizDevValue">—</div>
-            <div class="desc" id="bizDevDesc">Sales and marketing usually need more time than new consultants expect.</div>
-          </div>
-        </div>
-
-        <ul class="insight-list" id="insightList">
-          <li>Enter your numbers to generate tailored observations.</li>
-        </ul>
-
-        <div class="section-divider"></div>
-
-        <h3>Part 1: Your Full 168-Hour Week</h3>
+        <h2>Section 1: Your Full 168-Hour Week</h2>
         <p class="sub">
           Enter hours per week across your full schedule. Use the <b>Work</b> row for the hours you can realistically dedicate to building and delivering your consulting business.
         </p>
@@ -576,7 +536,7 @@
 
         <div class="section-divider"></div>
 
-        <h3>Part 2: Your Working Hours Breakdown</h3>
+        <h2>Section 2: Your Working Hours Breakdown</h2>
         <p class="sub">
           Only allocate the hours entered for <b>Work</b> above. This section tests whether your consulting time is distributed realistically across the activities required to win and deliver work.
         </p>
@@ -619,7 +579,7 @@
 
       <!-- RIGHT COLUMN -->
       <div class="card">
-        <h3>Chart 1: Full 168-Hour Week</h3>
+        <h2>Section 1 Chart: Full 168-Hour Week</h2>
         <p class="sub">Use this chart to see whether your weekly capacity is actually available for consulting.</p>
         <div class="chartBox">
           <canvas id="chartCanvas1"></canvas>
@@ -627,19 +587,57 @@
 
         <div class="section-divider"></div>
 
-        <h3>Chart 2: Working Hours Breakdown</h3>
+        <h2>Section 2 Chart: Working Hours Breakdown</h2>
         <p class="sub">Use this chart to see whether your consulting time is allocated across the functions required to build a sustainable business.</p>
         <div class="chartBox">
           <canvas id="chartCanvas2"></canvas>
         </div>
       </div>
     </div>
+
+    <div class="card bottom-card">
+      <h2>Section 3: Readiness Summary</h2>
+      <p class="sub">
+        This section interprets your inputs so the worksheet functions as a decision tool, not just a chart generator.
+      </p>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="label">Overall Readiness</div>
+          <div class="value" id="readinessValue">Not enough data</div>
+          <div class="desc" id="readinessDesc">Enter your full week and work breakdown to see your readiness signal.</div>
+          <div class="signal warn" id="readinessSignal">INCOMPLETE</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="label">Biggest Risk</div>
+          <div class="value" id="riskValue">None yet</div>
+          <div class="desc" id="riskDesc">The tool will flag the biggest planning issue based on your allocation.</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="label">Capacity</div>
+          <div class="value" id="capacityValue">—</div>
+          <div class="desc" id="capacityDesc">Your total schedule needs enough room for consulting work to be realistic.</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="label">Business Development</div>
+          <div class="value" id="bizDevValue">—</div>
+          <div class="desc" id="bizDevDesc">Sales and marketing usually need more time than new consultants expect.</div>
+        </div>
+      </div>
+
+      <ul class="insight-list" id="insightList">
+        <li>Enter your numbers to generate tailored observations.</li>
+      </ul>
+    </div>
   </div>
 
 <script>
 (() => {
   const WEEK = 168;
-  const LS_KEY = "consulting_readiness_chart_v5";
+  const LS_KEY = "consulting_readiness_chart_v6";
 
   const CATEGORIES_1 = [
     { label: "Family",            key: "family",           color: "#CEA8F0", labelEditable: false },
@@ -1043,7 +1041,7 @@
 
     if (workHours === 0){
       capacityValue = "No work time";
-      capacityDesc = "You have not allocated any Work hours in Part 1, so the consulting plan is not yet viable.";
+      capacityDesc = "You have not allocated any Work hours in Section 1, so the consulting plan is not yet viable.";
       bizDevValue = "Not started";
       bizDevDesc = "Allocate Work hours before evaluating your sales and marketing time.";
       biggestRisk = "No available consulting time";
@@ -1057,7 +1055,7 @@
       capacityDescEl.textContent = capacityDesc;
       bizDevValueEl.textContent = bizDevValue;
       bizDevDescEl.textContent = bizDevDesc;
-      insightListEl.innerHTML = "<li>Allocate time to Work in Part 1 before using this as a consulting readiness tool.</li>";
+      insightListEl.innerHTML = "<li>Allocate time to Work in Section 1 before using this as a consulting readiness tool.</li>";
       return;
     }
 
@@ -1230,7 +1228,7 @@
     if (workHours === 0){
       if (used2 > 0){
         status2El.className = "status bad";
-        status2El.textContent = "You have hours entered in Part 2, but Work is 0 in Part 1. Add Work hours above or clear the work breakdown.";
+        status2El.textContent = "You have hours entered in Section 2, but Work is 0 in Section 1. Add Work hours above or clear the work breakdown.";
       } else {
         status2El.className = "status warn";
         status2El.textContent = "Enter Work hours above to activate this section.";
@@ -1247,9 +1245,9 @@
 
     if (used2 > workHours){
       status2El.className = "status bad";
-      status2El.textContent = `Your consulting activity plan requires ${(used2 - workHours).toFixed(1)} more hours than you actually have available. Reduce one or more work categories or increase Work hours in Part 1.`;
+      status2El.textContent = `Your consulting activity plan requires ${(used2 - workHours).toFixed(1)} more hours than you actually have available. Reduce one or more work categories or increase Work hours in Section 1.`;
     } else if (used2 < workHours){
-      status2El.className = "status.warn";
+      status2El.className = "status warn";
       status2El.textContent = `You still have ${remaining2.toFixed(1)} unallocated working hours. Finish assigning them before treating this as a final plan.`;
     } else {
       status2El.className = "status ok";
