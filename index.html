@@ -485,8 +485,8 @@
         </div>
         <div class="step">
           <div class="num">3</div>
-          <div class="title">Review your readiness summary</div>
-          <div class="desc">See whether the plan is realistic, where the risks are, and what needs to change before launch.</div>
+          <div class="title">Review your readiness tips</div>
+          <div class="desc">See where the plan appears balanced, where the risks are, and what may need to change before launch.</div>
         </div>
       </div>
     </div>
@@ -588,23 +588,27 @@
 
     <!-- SECTION 3 -->
     <div class="card bottom-card">
-      <h2>Section 3: Readiness Summary</h2>
+      <h2>Section 3: Readiness Tips</h2>
       <p class="sub">
-        This section interprets your inputs so the worksheet functions as a decision tool, not just a chart generator.
+        This section provides general guidance based on your inputs to help you think through your time allocation and business setup.
       </p>
+
+      <div class="callout">
+        This is not meant to be predictive of your success, but to help you explore a beneficial balance of the necessary components to run your business.
+      </div>
 
       <div class="summary-grid">
         <div class="summary-card">
-          <div class="label">Overall Readiness</div>
+          <div class="label">Overall Guidance</div>
           <div class="value" id="readinessValue">Not enough data</div>
-          <div class="desc" id="readinessDesc">Enter your full week and work breakdown to see your readiness signal.</div>
+          <div class="desc" id="readinessDesc">Enter your full week and work breakdown to see your planning guidance.</div>
           <div class="signal warn" id="readinessSignal">INCOMPLETE</div>
         </div>
 
         <div class="summary-card">
-          <div class="label">Biggest Risk</div>
+          <div class="label">Main Area to Watch</div>
           <div class="value" id="riskValue">None yet</div>
-          <div class="desc" id="riskDesc">The tool will flag the biggest planning issue based on your allocation.</div>
+          <div class="desc" id="riskDesc">This highlights the main planning issue suggested by your current inputs.</div>
         </div>
 
         <div class="summary-card">
@@ -629,7 +633,7 @@
 <script>
 (() => {
   const WEEK = 168;
-  const LS_KEY = "consulting_readiness_chart_v7";
+  const LS_KEY = "consulting_readiness_chart_v8";
 
   const CATEGORIES_1 = [
     { label: "Family",            key: "family",           color: "#CEA8F0", labelEditable: false },
@@ -1018,11 +1022,11 @@
     const incomplete = workHours === 0 || used2 === 0;
 
     let overall = "Not enough data";
-    let overallDesc = "Enter your full week and work breakdown to see your readiness signal.";
+    let overallDesc = "Enter your full week and work breakdown to see your planning guidance.";
     let overallTone = "warn";
 
     let biggestRisk = "None yet";
-    let biggestRiskDesc = "The tool will flag the biggest planning issue based on your allocation.";
+    let biggestRiskDesc = "This highlights the main planning issue suggested by your current inputs.";
 
     let capacityValue = "Insufficient";
     let capacityDesc = "Your schedule needs room for consulting work to be realistic.";
@@ -1037,7 +1041,7 @@
       bizDevValue = "Not started";
       bizDevDesc = "Allocate Work hours before evaluating your sales and marketing time.";
       biggestRisk = "No available consulting time";
-      biggestRiskDesc = "You cannot test consulting readiness if your schedule does not include Work hours.";
+      biggestRiskDesc = "You cannot explore consulting readiness if your schedule does not include Work hours.";
       setReadinessSignal("INCOMPLETE", "warn");
       readinessValueEl.textContent = overall;
       readinessDescEl.textContent = overallDesc;
@@ -1047,7 +1051,7 @@
       capacityDescEl.textContent = capacityDesc;
       bizDevValueEl.textContent = bizDevValue;
       bizDevDescEl.textContent = bizDevDesc;
-      insightListEl.innerHTML = "<li>Allocate time to Work in Section 1 before using this as a consulting readiness tool.</li>";
+      insightListEl.innerHTML = "<li>Allocate time to Work in Section 1 before using this as a consulting planning tool.</li>";
       return;
     }
 
@@ -1067,7 +1071,7 @@
 
     if (bizDevPct < 20){
       bizDevValue = "Too low";
-      bizDevDesc = "Sales plus marketing are below 20% of your working hours. That creates pipeline risk.";
+      bizDevDesc = "Sales plus marketing are below 20% of your working hours. That may create pipeline risk.";
       insights.push("Sales and marketing time is low relative to the hours required to generate demand.");
     } else if (bizDevPct < 35){
       bizDevValue = "Adequate";
@@ -1080,22 +1084,22 @@
     }
 
     if (overload){
-      overall = "Unrealistic";
+      overall = "Needs adjustment";
       overallDesc = "Your total plan exceeds the 168 hours available in a week. The schedule is not workable as entered.";
       overallTone = "bad";
       biggestRisk = "Capacity overload";
-      biggestRiskDesc = "You have planned more time than exists in the week, so every downstream conclusion is unreliable until this is fixed.";
-      insights.unshift("Your total weekly plan is overloaded. Reduce categories before trusting any readiness signals.");
+      biggestRiskDesc = "You have planned more time than exists in the week, so the current structure needs revision.";
+      insights.unshift("Your total weekly plan is overloaded. Reduce categories before trusting the guidance below.");
     } else if (breakdownOverflow){
-      overall = "Unrealistic";
+      overall = "Needs adjustment";
       overallDesc = "Your working-hours breakdown requires more time than you actually made available in the week.";
       overallTone = "bad";
       biggestRisk = "Work breakdown exceeds capacity";
       biggestRiskDesc = "The consulting activity plan is larger than the time you actually have available.";
       insights.unshift("Your consulting work mix is asking for more time than your week can support.");
     } else if (deliveryPct > 70 && bizDevPct < 20){
-      overall = "High risk";
-      overallDesc = "Your plan is heavily delivery-weighted and underinvested in business development. That creates future pipeline risk.";
+      overall = "Needs adjustment";
+      overallDesc = "Your plan is heavily delivery-weighted and underinvested in business development. That may create future pipeline strain.";
       overallTone = "bad";
       biggestRisk = "Pipeline risk";
       biggestRiskDesc = "Too much time is allocated to delivery relative to the time needed to win future work.";
@@ -1105,22 +1109,22 @@
       overallDesc = "The direction may be workable, but not all working hours have been allocated yet.";
       overallTone = "warn";
       biggestRisk = "Incomplete planning";
-      biggestRiskDesc = "Not all Work hours are assigned, which makes the readiness picture partial.";
-      insights.unshift("Finish allocating all Work hours before treating this as a final readiness assessment.");
+      biggestRiskDesc = "Not all Work hours are assigned, which makes the picture partial.";
+      insights.unshift("Finish allocating all Work hours before treating this as a final planning view.");
     } else if (workPctOfWeek >= 15 && bizDevPct >= 25 && deliveryPct <= 65){
-      overall = "Realistic";
-      overallDesc = "Your time allocation looks reasonably aligned with the demands of building and operating a consulting business.";
+      overall = "Appears workable";
+      overallDesc = "Your time allocation appears reasonably aligned with the demands of building and operating a consulting business.";
       overallTone = "good";
       biggestRisk = "Execution discipline";
-      biggestRiskDesc = "The structure is plausible. The next challenge is following it consistently in real life.";
+      biggestRiskDesc = "The structure looks plausible. The next challenge is following it consistently in real life.";
       insights.unshift("Your plan appears more grounded than average and shows a workable balance between business development and delivery.");
     } else {
-      overall = "Moderate risk";
+      overall = "Use caution";
       overallDesc = "Your plan could work, but some parts of the time allocation still create strain or risk.";
       overallTone = "warn";
       biggestRisk = "Balance risk";
       biggestRiskDesc = "The mix of available time and work allocation is not obviously broken, but it is not yet strong.";
-      insights.unshift("This plan is not impossible, but it still needs tightening before you should trust it.");
+      insights.unshift("This plan is not impossible, but it still needs tightening before you should rely on it.");
     }
 
     if (operations === 0 && workHours > 0){
@@ -1135,7 +1139,10 @@
 
     readinessValueEl.textContent = overall;
     readinessDescEl.textContent = overallDesc;
-    setReadinessSignal(overallTone === "good" ? "REALISTIC" : overallTone === "bad" ? "HIGH RISK" : "USE CAUTION", overallTone);
+    setReadinessSignal(
+      overallTone === "good" ? "APPEARS WORKABLE" : overallTone === "bad" ? "NEEDS ADJUSTMENT" : "USE CAUTION",
+      overallTone
+    );
 
     riskValueEl.textContent = biggestRisk;
     riskDescEl.textContent = biggestRiskDesc;
